@@ -1,36 +1,27 @@
-import React, { useState, useEffect } from "react"; // Import React and useEffect
-import UserCard from "../components/UserCard";
+// pages/Home.js
+import React, { useState, useEffect } from "react";
+import MovieCard from "../components/MovieCard";
 import NavBar from "../components/NavBar";
 
 function Home() {
-  const [users, setUsers] = useState([]);
+  const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:4000/users")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch users");
-        }
-        return response.json();
-      })
-      .then((data) => setUsers(data))
-      .catch((error) => console.error("Fetch error:", error));
+    fetch("/movies")
+      .then((response) => response.json())
+      .then((data) => setMovies(data));
   }, []);
 
-  const userList = users.map((user) => {
-    return <UserCard key={user.id} user={user} />;
-  });
-
   return (
-    <>
-      <header>
-        <NavBar />
-      </header>
-      <main>
-        <h1>Home!</h1>
-        {userList}
-      </main>
-    </>
+    <div>
+      <NavBar />
+      <h1>Home Page</h1>
+      <div className="movie-list">
+        {movies.map((movie) => (
+          <MovieCard key={movie.id} movie={movie} />
+        ))}
+      </div>
+    </div>
   );
 }
 
